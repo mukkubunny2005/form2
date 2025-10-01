@@ -12,3 +12,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 SessionLocal2 = sessionmaker(autocommit=False, autoflush=False, bind=engine2)
 SessionLocal3 = sessionmaker(autocommit=False, autoflush=False, bind=engine3)
 Base = declarative_base()
+Base2 = declarative_base()
+Base3 = declarative_base()
+

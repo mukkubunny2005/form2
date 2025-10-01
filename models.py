@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, Enum, DECIMAL, ForeignKey, LargeBinary, Date
-from database import Base
+from database import Base, Base2, Base3
 import enum
 import uuid
 
@@ -9,6 +9,7 @@ class GenderEnum(str, enum.Enum):
 
 class Hostel(Base):
     __tablename__ = "hostels"
+    __table_args__ = {"schema": "hostel_form"}
     id = Column(String(225), primary_key=True, default=lambda: str(uuid.uuid4()))
     hostel_name = Column(String(225), nullable=False)
     area = Column(String(225), nullable=False)
@@ -39,7 +40,8 @@ class Hostel(Base):
 
 class Menu(Base):
     __tablename__ = 'menu'
-    id = Column(String(225), ForeignKey('hostels.id'), primary_key=True)
+    __table_args__ = {"schema": "hostel_form"}
+    id = Column(String(225), ForeignKey('hostel_form.hostels.id'), primary_key=True)
     monday = Column(String(50))
     tuesday = Column(String(50))
     wednesday = Column(String(50))
@@ -51,7 +53,8 @@ class Menu(Base):
 
 class WifiScreens(Base):
     __tablename__ = 'wifiscreens'
-    id = Column(String(225), ForeignKey('hostels.id'), primary_key=True)
+    __table_args__ = {"schema": "hostel_form"}
+    id = Column(String(225), ForeignKey('hostel_form.hostels.id'), primary_key=True)
 
     screens = Column(String(50))
     password = Column(String(50))
@@ -81,8 +84,9 @@ class RoomEnum(str, enum.Enum):
     AC = "AC"
     NONAC = "Non AC"
 
-class TenantRegistration(Base):
+class TenantRegistration(Base2):
     __tablename__ = "tenant_registration_form"
+    __table_args__ = {"schema": "tenant"}
     tenant_id = Column(String(225), primary_key=True, default=lambda: str(uuid.uuid4()))
     first_name = Column(String(20), nullable=False)
     last_name = Column(String(20), nullable=False)
@@ -108,11 +112,10 @@ class TenantRegistration(Base):
     food_preference = Column(Enum(FoodEnum), nullable=False)
     room_type = Column(Enum(RoomEnum), nullable=False)
 
-    
-    
-class TenantStudent(Base):
+class TenantStudent(Base2):
     __tablename__ = "tenant_student_drop"
-    tenant_id = Column(String(225), ForeignKey("tenant_registration_form.tenant_id"), primary_key=True)
+    __table_args__ = {"schema": "tenant"}
+    tenant_id = Column(String(225), ForeignKey("tenant.tenant_registration_form.tenant_id"), primary_key=True)
     studying_at = Column(String(200), nullable=False)
     student_id_number = Column(String(50), nullable=False)
     id_card_photo = Column(LargeBinary)
@@ -121,10 +124,10 @@ class TenantStudent(Base):
     pincode = Column(String(10))
     phone_number = Column(String(15))
   
-class TenantEmployee(Base):
+class TenantEmployee(Base2):
     __tablename__ = "tenant_employee"
-
-    tenant_id = Column(Integer, ForeignKey("tenant_registration_form.tenant_id", ondelete="CASCADE"), primary_key=True)
+    __table_args__ = {"schema": "tenant"}
+    tenant_id = Column(String(225), ForeignKey("tenant.tenant_registration_form.tenant_id", ondelete="CASCADE"), primary_key=True)
     company_name = Column(String(200), nullable=False)
     employee_id_number = Column(String(50), nullable=False)
     id_card_image = Column(LargeBinary)
@@ -135,24 +138,24 @@ class TenantEmployee(Base):
 
    
 
-class TenantSelfEmployed(Base):
+class TenantSelfEmployed(Base2):
     __tablename__ = "tenant_self_employed"
-
-    tenant_id = Column(Integer, ForeignKey("tenant_registration_form.tenant_id", ondelete="CASCADE"), primary_key=True)
+    __table_args__ = {"schema": "tenant"}
+    tenant_id = Column(String(225), ForeignKey("tenant.tenant_registration_form.tenant_id", ondelete="CASCADE"), primary_key=True)
     occupation = Column(String(200), nullable=False)
     alternate_number = Column(String(15))
     
 
-class TenantOther(Base):
+class TenantOther(Base2):
     __tablename__ = "tenant_other"
-
-    tenant_id = Column(Integer, ForeignKey("tenant_registration_form.tenant_id", ondelete="CASCADE"), primary_key=True)
+    __table_args__ = {"schema": "tenant"}
+    tenant_id = Column(String(225), ForeignKey("tenant.tenant_registration_form.tenant_id", ondelete="CASCADE"), primary_key=True)
     description = Column(String(500))
     phone_number = Column(String(15))
 
 ##########################################################################################################
 
-class Users(Base):
+class Users(Base3):
     __tablename__ = 'authentication'
     id = Column(String(200), default=lambda: str(uuid.uuid4()), primary_key=True, nullable=False)
     first_name = Column(String(200))

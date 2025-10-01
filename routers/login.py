@@ -78,16 +78,15 @@ async def get_user(user: user_dependency, db: db_dependency):
     return db.query(Users).filter(Users.id == user.get('id')).first()
 
 
-# User Creation
 @router.post("/")
 async def create_user(
     db: db_dependency,
-    username: str = Form(...),
-    email: str = Form(...),
-    first_name: str = Form(...),
-    last_name: str = Form(...),
-    password: str = Form(...),
-    ph_no: str = Form(...),
+    username: str,
+    email: str,
+    first_name: str,
+    last_name: str,
+    password: str,
+    ph_no: str,
 ):
     existing_user = db.query(Users).filter(Users.username == username).first()
     if existing_user:
@@ -159,7 +158,7 @@ async def change_password(user: user_dependency, db: db_dependency,
     return 'password change succeessfully'
 
 
-@router.delete('/')
+@router.delete('/logout')
 async def logout(user:user_dependency, db:db_dependency):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate user.')
