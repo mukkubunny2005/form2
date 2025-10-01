@@ -1,10 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+import os
 
-SQLALCHEMY_DATABASE_URL = 'mysql+pymysql://root:bunny123@localhost:3306/hostel_form'
-SQLALCHEMY_DATABASE_URL2 = 'mysql+pymysql://root:bunny123@localhost:3306/tenant'
-SQLALCHEMY_DATABASE_URL3 = 'mysql+pymysql://root:bunny123@localhost:3306/login_form'
+SQLALCHEMY_DATABASE_URL = os.getenv('mysql+pymysql://root:bunny123@localhost:3306/hostel_form')
+SQLALCHEMY_DATABASE_URL2 = os.getenv('mysql+pymysql://root:bunny123@localhost:3306/tenant')
+SQLALCHEMY_DATABASE_URL3 = os.getenv('mysql+pymysql://root:bunny123@localhost:3306/login_form')
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 engine2 = create_engine(SQLALCHEMY_DATABASE_URL2)
 engine3 = create_engine(SQLALCHEMY_DATABASE_URL3)
