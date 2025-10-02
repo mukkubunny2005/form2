@@ -6,9 +6,6 @@ from typing import Annotated
 from jose import jwt, JWTError
 from datetime import timedelta, datetime, timezone
 from passlib.context import CryptContext
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
-
 from database import SessionLocal3
 from models import Users
 

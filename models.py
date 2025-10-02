@@ -113,7 +113,7 @@ class TenantRegistration(Base2):
     room_type = Column(Enum(RoomEnum), nullable=False)
 
 class TenantStudent(Base2):
-    __tablename__ = "tenant_student_drop"
+    __tablename__ = "tenant_studen"
     __table_args__ = {"schema": "tenant"}
     tenant_id = Column(String(225), ForeignKey("tenant.tenant_registration_form.tenant_id"), primary_key=True)
     studying_at = Column(String(200), nullable=False)
